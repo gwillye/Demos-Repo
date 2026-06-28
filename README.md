@@ -27,8 +27,9 @@ A growing collection of **self-contained, actually-run** demos — each one a fo
 | [marketing-mix-modeling](marketing-mix-modeling/) | Adstock MMM: channel contribution + ROI | scikit-learn, plotly | marketing / media spend |
 | [multi-touch-attribution](multi-touch-attribution/) | Multi-touch attribution across channels | pandas | marketing / attribution |
 | [sales-demand-forecasting](sales-demand-forecasting/) | GBR vs seasonal-naive demand forecast | scikit-learn, plotly | retail / demand planning |
+| [uplift-modeling](uplift-modeling/) | T-learner uplift for campaign targeting (Qini) | scikit-learn | marketing / causal targeting |
 
-*(19 demos and counting — this repo grows over time.)*
+*(20 demos and counting — this repo grows over time.)*
 
 ## ▶️ Running any demo
 ```bash

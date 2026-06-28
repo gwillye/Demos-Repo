@@ -16,5 +16,13 @@
 - Control mean R$ 43.42 vs Treatment R$ 45.96
 - Welch t-test: t = 3.86, p = 0.0001
 
+## Bayesian read (Beta-Binomial, flat prior)
+- **P(treatment > control) = 100.0%** - the decision-useful number a
+  p-value can't give you directly.
+- Expected absolute lift **+2.367%**, 95% credible interval
+  **[+1.242%, +3.491%]**.
+- Reading both schools together: the frequentist test says *"this isn't noise"*; the
+  Bayesian posterior says *"and here's how confident we are that B wins, and by how much."*
+
 ## Verdict
 Ship B - the lift is real and unlikely to be noise.
