@@ -16,15 +16,26 @@ workflow end to end: data → model → evaluation → business-readable drivers
    **Logistic Regression** (interpretable baseline) and **Random Forest**.
 3. Evaluates with **ROC-AUC** + a full precision/recall/F1 report.
 4. Surfaces the **feature importances** so the result is actionable, not a black box.
+5. **Cost-based decision threshold** — turns the churn *scores* into a *who-to-contact*
+   retention plan (offer cost vs. value saved) and finds the ROI-optimal cutoff.
+
+## From a score to a decision
+A churn model is only worth its retention budget if you act on it well. With an offer
+cost of **R$ 25**, a **30%** save rate and **R$ 200** saved per retained customer, the
+break-even churn probability is **~0.42** — so the demo's optimal policy contacts only
+customers above that. Blasting the *whole* base loses **~R$ 20k** on the test set; the
+**targeted** policy turns that into a positive return. ROC-AUC tells you the model
+*ranks* well; this tells you **who to actually contact** — the decision the business pays for.
 
 ## Results (reproducible, seed = 42)
 - Random Forest **ROC-AUC ≈ 0.82**; logistic regression close behind.
 - Top churn drivers: **tenure** (longer = loyal), **contract type**
   (month-to-month churns most), **support calls**, **monthly charges**.
+- Cost-based policy: contact churn-prob **≥ 0.42** → ~**R$ 20k** better than contacting everyone.
 - Full output: [`results/RESULTS.md`](results/RESULTS.md),
   `results/roc_curves.png`, `results/feature_importance.png`, and
   **`results/churn.html`** - an interactive **Plotly** view (ROC curves +
-  feature importance), GitHub-Pages ready.
+  feature importance + a campaign-value-vs-threshold curve), GitHub-Pages ready.
 
 ## Run
 ```bash

@@ -40,3 +40,11 @@ weighted avg      0.855     0.900     0.872      1000
 - `support_calls`: 0.106
 - `contract`: 0.045
 - `senior`: 0.027
+
+## Cost-based retention decision (turn the model into ROI)
+
+Assumptions: offer cost **R$ 25**/customer · retention success **30%** · value saved per retained customer **R$ 200**.
+
+- **Optimal policy: contact customers with churn prob ≥ 0.42** → **37 of 1000** test customers.
+- **Expected net value: R$ 256** vs R$ -19,716 from blasting everyone (**R$ 19,972 better**).
+- ROC-AUC says the model *ranks* well; this says **who to actually contact** to maximise return — the decision the business is paying for.

@@ -3,7 +3,9 @@ Customer Churn Prediction - demo
 --------------------------------
 Generates a seeded, telecom-style customer dataset and trains an ML pipeline to
 predict churn (Logistic Regression vs. Random Forest), then reports ROC-AUC,
-a classification report, and feature importance.
+a classification report, and feature importance. It then adds the part that
+actually drives ROI: a **cost-based decision threshold** that turns churn
+*scores* into a *who-to-contact* retention plan (offer cost vs. value saved).
 
 Real-world context: in marketing / CRM analytics, predicting which customers are
 about to churn lets the business target retention offers at the right people --
@@ -62,6 +64,21 @@ def make_data(n):
     })
 
 
+def campaign_value(proba, offer_cost=25.0, success_rate=0.30, customer_value=200.0):
+    """Cost-based decision layer. Contact every customer whose churn probability is
+    >= a threshold with a retention offer. Expected net value per contacted customer
+    = p_churn * success_rate * customer_value - offer_cost. Sweep the threshold and
+    return the one that maximises total expected value over the (test) population."""
+    taus = np.linspace(0.0, 1.0, 101)
+    evs = np.array([float(np.sum(proba[proba >= t] * success_rate * customer_value
+                                 - offer_cost)) for t in taus])
+    i = int(np.argmax(evs))
+    return dict(taus=taus, evs=evs, best_tau=float(taus[i]), best_ev=float(evs[i]),
+                n_contacted=int(np.sum(proba >= taus[i])), n_all=int(proba.size),
+                ev_contact_all=float(evs[0]), offer_cost=offer_cost,
+                success_rate=success_rate, customer_value=customer_value)
+
+
 def main():
     df = make_data(N)
     X, y = df.drop(columns="churn"), df["churn"]
@@ -96,6 +113,23 @@ def main():
     lines.append("\n## Feature importance (RandomForest)\n\n")
     lines += [f"- `{k}`: {v:.3f}\n" for k, v in imp.items()]
 
+    # cost-based decision layer: who to actually contact
+    rf_proba = models["RandomForest"].predict_proba(Xte)[:, 1]
+    cv = campaign_value(rf_proba)
+    gain = cv["best_ev"] - cv["ev_contact_all"]
+    lines.append(
+        "\n## Cost-based retention decision (turn the model into ROI)\n\n"
+        f"Assumptions: offer cost **R$ {cv['offer_cost']:.0f}**/customer · "
+        f"retention success **{cv['success_rate']:.0%}** · value saved per retained "
+        f"customer **R$ {cv['customer_value']:.0f}**.\n\n"
+        f"- **Optimal policy: contact customers with churn prob ≥ {cv['best_tau']:.2f}** "
+        f"→ **{cv['n_contacted']} of {cv['n_all']}** test customers.\n"
+        f"- **Expected net value: R$ {cv['best_ev']:,.0f}** vs "
+        f"R$ {cv['ev_contact_all']:,.0f} from blasting everyone "
+        f"(**R$ {gain:,.0f} better**).\n"
+        "- ROC-AUC says the model *ranks* well; this says **who to actually contact** "
+        "to maximise return — the decision the business is paying for.\n")
+
     plt.figure(figsize=(6, 5))
     for name, ((fpr, tpr, _), auc) in roc.items():
         plt.plot(fpr, tpr, label=f"{name} (AUC={auc:.3f})")
@@ -108,9 +142,9 @@ def main():
     plt.title("Feature importance (RandomForest)"); plt.tight_layout()
     plt.savefig(out / "feature_importance.png", dpi=110); plt.close()
 
-    # interactive view (GitHub-Pages ready): ROC curves + feature importance
-    fig = make_subplots(rows=1, cols=2,
-                        subplot_titles=("ROC curve", "Feature importance (RandomForest)"))
+    # interactive view (GitHub-Pages ready): ROC + importance + campaign value
+    fig = make_subplots(rows=1, cols=3, subplot_titles=(
+        "ROC curve", "Feature importance (RF)", "Campaign value vs threshold"))
     for (name, ((fpr, tpr, _), auc)), col in zip(roc.items(), ["#EF553B", "#00CC96"]):
         fig.add_scatter(x=fpr, y=tpr, name=f"{name} (AUC {auc:.3f})",
                         line=dict(color=col, width=2.5), row=1, col=1)
@@ -119,15 +153,25 @@ def main():
     imp_asc = imp.sort_values()
     fig.add_bar(x=imp_asc.values, y=imp_asc.index, orientation="h",
                 marker_color="#636EFA", showlegend=False, row=1, col=2)
+    fig.add_scatter(x=cv["taus"], y=cv["evs"], name="exp. net value",
+                    line=dict(color="#AB63FA", width=2.5), showlegend=False, row=1, col=3)
+    fig.add_vline(x=cv["best_tau"], line=dict(dash="dot", color="#AB63FA"), row=1, col=3,
+                  annotation_text=f"optimal τ={cv['best_tau']:.2f}", annotation_font_size=9)
+    fig.add_hline(y=0, line=dict(color="#ddd"), row=1, col=3)
     fig.update_xaxes(title="False positive rate", row=1, col=1)
     fig.update_yaxes(title="True positive rate", row=1, col=1)
-    fig.update_layout(template="plotly_white", height=470, legend=dict(x=.45, y=.1),
-                      title=f"Customer churn - ROC & drivers (churn rate {y.mean():.1%})")
+    fig.update_xaxes(title="contact threshold (churn prob)", row=1, col=3)
+    fig.update_yaxes(title="expected net value (R$)", row=1, col=3)
+    fig.update_layout(template="plotly_white", height=470, legend=dict(x=.34, y=.1),
+                      title=f"Customer churn — rank, drivers & retention ROI "
+                            f"(churn {y.mean():.1%}, optimal τ={cv['best_tau']:.2f})")
     fig.write_html(out / "churn.html", include_plotlyjs="cdn")
 
     (out / "RESULTS.md").write_text("".join(lines), encoding="utf-8")
     best = max(a for (_, a) in roc.values())
-    print(f"Done. Best ROC-AUC: {best:.3f}")
+    print(f"Done. Best ROC-AUC: {best:.3f} | optimal contact threshold={cv['best_tau']:.2f} "
+          f"-> {cv['n_contacted']}/{cv['n_all']} contacted, "
+          f"exp. value R$ {cv['best_ev']:,.0f} (R$ {gain:,.0f} vs blast-all)")
     print("See results/RESULTS.md + results/*.png + results/churn.html")
 
 
