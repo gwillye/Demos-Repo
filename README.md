@@ -10,6 +10,7 @@ A growing collection of **self-contained, actually-run** demos — each one a fo
 |---|---|---|---|
 | [customer-churn-prediction](customer-churn-prediction/) | Predict churn (LogReg vs RandomForest) | scikit-learn | CRM / retention (marketing) |
 | [rfm-customer-segmentation](rfm-customer-segmentation/) | RFM + KMeans customer segments | pandas, scikit-learn | CRM / retail targeting |
+| [ab-test-analyzer](ab-test-analyzer/) | A/B test: z-test + chi² + CI + lift + ship verdict | numpy, scipy | growth / CRO experimentation |
 | [recommender-cf](recommender-cf/) | Collaborative-filtering recommender | numpy, scikit-learn | e-commerce / content reco |
 | [sentiment-analysis](sentiment-analysis/) | Text sentiment classification | NLP, scikit-learn | social / brand monitoring |
 | [text-summarizer](text-summarizer/) | Extractive text summarization | NLP | content ops |
