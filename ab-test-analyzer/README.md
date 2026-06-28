@@ -17,7 +17,9 @@ used in experimentation / conversion-rate-optimization work.
 4. **Welch t-test** on the secondary metric (revenue per converter).
 5. **Bayesian Beta-Binomial** read: **P(treatment > control)** + a 95% credible
    interval on the lift - the decision-useful number a p-value can't give directly.
-6. Prints a plain-English **verdict** at alpha = 0.05.
+6. **Power / sample-size** analysis: how many users per arm you need to detect a
+   target lift, and the smallest lift *this* sample can actually detect (MDE).
+7. Prints a plain-English **verdict** at alpha = 0.05.
 
 ## Frequentist *and* Bayesian, on purpose
 A p-value answers *"how surprising is this data if there were no effect?"* - **not**
@@ -26,12 +28,21 @@ lift **isn't noise**, and the Bayesian posterior says **how confident** we are t
 **and by how much** (`P(B>A)` + credible interval). On this seed the two CIs land on top of
 each other - a clean sanity check that the two schools agree.
 
+## Design *and* read it
+Reading a test is only half the job - a test that's too small can't see the lift you
+care about. So the demo also does **power analysis**: on this seed it needs **~14,900
+users/arm** to detect a +10% lift at 80% power, and the actual sample (6,000/arm) is only
+powered down to a **+16% lift** - the observed +23.9% cleared that bar, but a subtler
+true effect would have been **missed**. Sizing the experiment up front is the difference
+between "we ran a test" and "we ran a test that could answer the question."
+
 ## Results (reproducible, seed = 11)
 - Detects a **significant conversion lift** (+23.9%, p < 0.001), `P(B>A) = 100%`, and a
-  ship recommendation; revenue-per-converter checked separately.
+  ship recommendation; revenue-per-converter checked separately. Power analysis flags the
+  test as well-powered for this effect but underpowered for lifts below ~+16%.
 - Output: [`results/RESULTS.md`](results/RESULTS.md), `results/conversion.png`
   (rates with 95% CI error bars), and **`results/ab_test.html`** - an interactive
-  **Plotly** view (conversion bars + Bayesian posteriors), GitHub-Pages ready.
+  **Plotly** view (conversion bars + Bayesian posteriors + a power curve), GitHub-Pages ready.
 
 ## Run
 ```bash

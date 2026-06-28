@@ -22,10 +22,24 @@ You spend across TV, Search, Social and Email and see total weekly sales. But sp
 
 **R² = 0.921.** The model recovers the true per-channel effects and ranks ROI correctly — **Email** is the most efficient channel, **Social** the least. Actionable read: shift marginal budget from Social toward Email/Search.
 
+## 🎯 Budget optimization (`optimize.py`)
+Measuring ROI is half the job — the decision MMM serves is *how to split a fixed budget*. With **diminishing returns** (saturating response per channel), the optimum is **not** "all-in on the best channel": it's where every funded channel has the **same marginal return**. `optimize.py` models saturation and solves the constrained allocation (SLSQP):
+
+```
+channel    even split    optimized   marginal@opt
+TV             50,000       74,233          1.665
+Search         50,000       47,204          1.678
+Social         50,000       29,391          1.661   <- pulled back (saturated early)
+Email          50,000       49,171          1.672
+Lift from reallocation: +2.0%   (marginals equalized = optimal)
+```
+Exports `budget_optimization.html` (Plotly) and self-checks that the optimizer converged, respected the budget, and **equalized marginal returns**.
+
 ## Run
 ```bash
 pip install -r requirements.txt
-python mmm.py        # prints the table + writes mmm_contributions.html
+python mmm.py        # measure: contribution & ROI per channel -> mmm_contributions.html
+python optimize.py   # decide: optimal budget split -> budget_optimization.html
 ```
 
 ## Notes

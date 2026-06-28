@@ -24,5 +24,15 @@
 - Reading both schools together: the frequentist test says *"this isn't noise"*; the
   Bayesian posterior says *"and here's how confident we are that B wins, and by how much."*
 
+## Power / sample size (design the test, not just read it)
+- To detect a **+10% relative lift** at **80% power**
+  (alpha=0.05), you'd need **~14,946 users per arm**.
+- This test (6,000/arm) is powered to detect down to a **+16.0%**
+  relative lift at 80% power - anything smaller it would likely **miss**.
+- Post-hoc power for the *observed* +23.9% lift: **99%**.
+- Takeaway: the observed effect was large enough to detect, but a true lift below
+  ~+16.0% would have left this test **underpowered** - size the next
+  experiment for the smallest lift that's worth shipping.
+
 ## Verdict
 Ship B - the lift is real and unlikely to be noise.
