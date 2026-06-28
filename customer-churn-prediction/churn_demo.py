@@ -13,7 +13,8 @@ The data is SYNTHETIC (seeded for reproducibility); to use real data, replace
 `make_data()` with your own loader returning the same columns + a `churn` label.
 
 Run:  python churn_demo.py
-Out:  results/RESULTS.md, results/roc_curves.png, results/feature_importance.png
+Out:  results/RESULTS.md, results/roc_curves.png, results/feature_importance.png,
+      results/churn.html (interactive)
 """
 from pathlib import Path
 import numpy as np
@@ -27,6 +28,8 @@ from sklearn.metrics import roc_auc_score, classification_report, roc_curve
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 RNG = np.random.default_rng(42)
 N = 4000
@@ -105,10 +108,27 @@ def main():
     plt.title("Feature importance (RandomForest)"); plt.tight_layout()
     plt.savefig(out / "feature_importance.png", dpi=110); plt.close()
 
+    # interactive view (GitHub-Pages ready): ROC curves + feature importance
+    fig = make_subplots(rows=1, cols=2,
+                        subplot_titles=("ROC curve", "Feature importance (RandomForest)"))
+    for (name, ((fpr, tpr, _), auc)), col in zip(roc.items(), ["#EF553B", "#00CC96"]):
+        fig.add_scatter(x=fpr, y=tpr, name=f"{name} (AUC {auc:.3f})",
+                        line=dict(color=col, width=2.5), row=1, col=1)
+    fig.add_scatter(x=[0, 1], y=[0, 1], line=dict(dash="dash", color="#bbb"),
+                    showlegend=False, row=1, col=1)
+    imp_asc = imp.sort_values()
+    fig.add_bar(x=imp_asc.values, y=imp_asc.index, orientation="h",
+                marker_color="#636EFA", showlegend=False, row=1, col=2)
+    fig.update_xaxes(title="False positive rate", row=1, col=1)
+    fig.update_yaxes(title="True positive rate", row=1, col=1)
+    fig.update_layout(template="plotly_white", height=470, legend=dict(x=.45, y=.1),
+                      title=f"Customer churn - ROC & drivers (churn rate {y.mean():.1%})")
+    fig.write_html(out / "churn.html", include_plotlyjs="cdn")
+
     (out / "RESULTS.md").write_text("".join(lines), encoding="utf-8")
     best = max(a for (_, a) in roc.values())
     print(f"Done. Best ROC-AUC: {best:.3f}")
-    print("See results/RESULTS.md + results/*.png")
+    print("See results/RESULTS.md + results/*.png + results/churn.html")
 
 
 if __name__ == "__main__":

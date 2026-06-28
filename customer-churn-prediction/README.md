@@ -22,7 +22,9 @@ workflow end to end: data → model → evaluation → business-readable drivers
 - Top churn drivers: **tenure** (longer = loyal), **contract type**
   (month-to-month churns most), **support calls**, **monthly charges**.
 - Full output: [`results/RESULTS.md`](results/RESULTS.md),
-  `results/roc_curves.png`, `results/feature_importance.png`.
+  `results/roc_curves.png`, `results/feature_importance.png`, and
+  **`results/churn.html`** - an interactive **Plotly** view (ROC curves +
+  feature importance), GitHub-Pages ready.
 
 ## Run
 ```bash
@@ -36,4 +38,4 @@ replace `make_data()` with a loader that returns the same feature columns plus a
 binary `churn` column — the rest of the pipeline is unchanged.
 
 ## Stack
-Python · pandas · NumPy · scikit-learn · matplotlib
+Python · pandas · NumPy · scikit-learn · matplotlib · Plotly

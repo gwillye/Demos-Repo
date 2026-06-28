@@ -28,8 +28,9 @@ A growing collection of **self-contained, actually-run** demos — each one a fo
 | [multi-touch-attribution](multi-touch-attribution/) | Multi-touch attribution across channels | pandas | marketing / attribution |
 | [sales-demand-forecasting](sales-demand-forecasting/) | GBR vs seasonal-naive demand forecast | scikit-learn, plotly | retail / demand planning |
 | [uplift-modeling](uplift-modeling/) | T-learner uplift for campaign targeting (Qini) | scikit-learn | marketing / causal targeting |
+| [customer-lifetime-value](customer-lifetime-value/) | Predictive CLV/LTV (RFM + p(alive)), decile-lift validated | scikit-learn | marketing / retention value |
 
-*(20 demos and counting — this repo grows over time.)*
+*(21 demos and counting — this repo grows over time.)*
 
 ## ▶️ Running any demo
 ```bash

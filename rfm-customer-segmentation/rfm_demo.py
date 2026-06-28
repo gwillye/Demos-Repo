@@ -14,7 +14,8 @@ Data is SYNTHETIC (seeded). To use real data, feed `rfm_demo` a transactions
 DataFrame with columns: customer_id, order_date (datetime/date), amount.
 
 Run:  python rfm_demo.py
-Out:  results/RESULTS.md, results/segments.png, results/rfm_scatter.png
+Out:  results/RESULTS.md, results/segments.png, results/rfm_scatter.png,
+      results/segments.html (interactive)
 """
 from pathlib import Path
 from datetime import date, timedelta
@@ -25,6 +26,8 @@ from sklearn.cluster import KMeans
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 RNG = np.random.default_rng(7)
 N = 1500
@@ -107,8 +110,28 @@ def main():
     plt.title("RFM clusters (size = frequency)"); plt.colorbar(sc, label="cluster")
     plt.tight_layout(); plt.savefig(out / "rfm_scatter.png", dpi=110); plt.close()
 
+    # interactive view (GitHub-Pages ready): segment sizes + RFM map coloured by segment
+    palette = ["#4C72B0", "#DD8452", "#55A868", "#C44E52", "#8172B3", "#937860", "#999999"]
+    seg_sorted = seg.sort_values()
+    fig = make_subplots(rows=1, cols=2, column_widths=[0.4, 0.6],
+                        subplot_titles=("Customers per segment", "RFM map (size = frequency)"))
+    fig.add_bar(x=seg_sorted.values, y=seg_sorted.index, orientation="h",
+                marker_color="#4C72B0", showlegend=False, row=1, col=1)
+    for i, (name, grp) in enumerate(rfm.groupby("segment")):
+        fig.add_scatter(x=grp["recency"], y=grp["monetary"], mode="markers", name=name,
+                        marker=dict(size=3 + grp["frequency"], opacity=.6,
+                                    color=palette[i % len(palette)]),
+                        hovertemplate=f"<b>{name}</b><br>recency=%{{x}}d<br>"
+                                      "monetary=%{y:.0f}<extra></extra>", row=1, col=2)
+    fig.update_xaxes(title="Recency (days)", row=1, col=2)
+    fig.update_yaxes(title="Monetary (total spend)", row=1, col=2)
+    fig.update_layout(template="plotly_white", height=470,
+                      title=f"RFM segmentation - {N} customers, {len(seg)} segments",
+                      legend=dict(title="segment", font=dict(size=9)))
+    fig.write_html(out / "segments.html", include_plotlyjs="cdn")
+
     print("Done. Segments:", dict(seg))
-    print("See results/RESULTS.md + results/*.png")
+    print("See results/RESULTS.md + results/*.png + results/segments.html")
 
 
 if __name__ == "__main__":

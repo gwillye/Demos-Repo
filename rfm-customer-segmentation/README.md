@@ -21,7 +21,8 @@ exact customer-analytics workflow used in BI / growth / lifecycle-marketing role
 - ~1,500 customers segmented; **Champions** and **Hibernating/Lost** are the
   largest groups, with clean, interpretable mean-RFM profiles per segment.
 - Output: [`results/RESULTS.md`](results/RESULTS.md), `results/segments.png`,
-  `results/rfm_scatter.png`.
+  `results/rfm_scatter.png`, and **`results/segments.html`** - an interactive
+  **Plotly** view (segment sizes + an RFM map you can hover/zoom), GitHub-Pages ready.
 
 ## Run
 ```bash
@@ -34,4 +35,4 @@ The transactions are synthetic *only for reproducibility*. To run on real orders
 pass a DataFrame with `customer_id`, `order_date`, `amount` into `compute_rfm()`.
 
 ## Stack
-Python · pandas · NumPy · scikit-learn · matplotlib
+Python · pandas · NumPy · scikit-learn · matplotlib · Plotly
