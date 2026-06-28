@@ -19,8 +19,12 @@ A growing collection of **self-contained, actually-run** demos — each one a fo
 | [eda-dashboard](eda-dashboard/) | Exploratory data analysis dashboard | pandas, plotly | analytics reporting |
 | [time-series-forecasting](time-series-forecasting/) | Forecast a seasonal series | statsmodels / sklearn | demand / finance |
 | [astar-pathfinding](astar-pathfinding/) | A* search on a grid | python (algorithms) | classic CS / optimization |
+| [market-basket-association](market-basket-association/) | Association rules (Apriori: support/confidence/lift) | python | cross-sell / recommendation |
+| [kmeans-from-scratch](kmeans-from-scratch/) | K-means clustering implemented from scratch | numpy | unsupervised / fundamentals |
+| [monte-carlo-simulation](monte-carlo-simulation/) | Monte Carlo estimation / risk simulation | numpy | finance / risk |
+| [linear-programming](linear-programming/) | Linear-programming optimization | scipy | operations research |
 
-*(more demos are being added — this repo grows over time.)*
+*(15 demos and counting — this repo grows over time.)*
 
 ## ▶️ Running any demo
 ```bash
