@@ -1,10 +1,10 @@
-# 🧪 Demos-Repo — small, runnable data-science & ML demos
+# Demos-Repo: small, runnable data science and ML demos
 
-A growing collection of **self-contained, actually-run** demos — each one a focused project inspired by my work in **data science, ML, NLP, analytics and marketing**. Every demo runs end-to-end (synthetic or bundled data, no secrets), prints real metrics, and saves its outputs.
+This is a growing collection of self-contained demos that actually run. Each one is a focused project drawn from my work in data science, ML, NLP, analytics and marketing. Every demo runs end to end on synthetic or bundled data (no secrets), prints real metrics, and saves its outputs.
 
-> Built as a portfolio of *runnable* ideas — not coursework dumps. Each folder has its own README with a real-world framing, `requirements.txt`, and a `results/` with the numbers/plots it produced.
+I built this as a portfolio of runnable ideas rather than a dump of coursework. Each folder has its own README with a real-world framing, a `requirements.txt`, and a `results/` folder holding the numbers and plots it produced.
 
-## 📦 Demos
+## Demos
 
 | Demo | Problem | Stack | Real-world angle |
 |---|---|---|---|
@@ -30,17 +30,20 @@ A growing collection of **self-contained, actually-run** demos — each one a fo
 | [uplift-modeling](uplift-modeling/) | T-learner uplift for campaign targeting (Qini) | scikit-learn | marketing / causal targeting |
 | [customer-lifetime-value](customer-lifetime-value/) | Predictive CLV/LTV (RFM + p(alive)), decile-lift validated | scikit-learn | marketing / retention value |
 
-*(21 demos and counting — this repo grows over time.)*
+There are 21 demos here so far, and the repo grows over time.
 
-## ▶️ Running any demo
+## Running any demo
+
 ```bash
 cd <demo-folder>
 pip install -r requirements.txt
 python <main_script>.py   # see the folder's README
 ```
 
-## 🔒 Data & privacy
-All demos use **synthetic or public/bundled** data — **no secrets, no real personal data**. They exist to show method and reasoning, reproducibly.
+## Data and privacy
+
+All demos use synthetic or public/bundled data, so there are no secrets and no real personal data. They exist to show method and reasoning, reproducibly.
 
 ---
-*Part of [@gwillye](https://github.com/gwillye)'s portfolio. Author: Gabriel Willye — Data Scientist / AI.*
+
+Part of [@gwillye](https://github.com/gwillye)'s portfolio. Author: Gabriel Willye, Data Scientist / AI.
