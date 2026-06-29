@@ -1,10 +1,10 @@
-# Customer Churn Prediction - Results
+# Customer Churn Prediction, resultados
 
-Synthetic dataset: **4000 customers**, churn rate **8.8%**.
+Trabalhei com um dataset sintético de 4000 clientes, onde a taxa de churn é de 8.8%. É um caso bem desbalanceado, então vale olhar mais para recall e ROC-AUC do que para a acurácia crua.
 
 ## LogisticRegression
 
-- ROC-AUC: **0.820**
+- ROC-AUC: 0.820
 
 ```
               precision    recall  f1-score   support
@@ -19,7 +19,7 @@ weighted avg      0.892     0.913     0.874      1000
 
 ## RandomForest
 
-- ROC-AUC: **0.774**
+- ROC-AUC: 0.774
 
 ```
               precision    recall  f1-score   support
@@ -32,7 +32,7 @@ weighted avg      0.892     0.913     0.874      1000
 weighted avg      0.855     0.900     0.872      1000
 ```
 
-## Feature importance (RandomForest)
+## Importância das variáveis (RandomForest)
 
 - `monthly_charges`: 0.380
 - `tenure_months`: 0.323
@@ -41,10 +41,10 @@ weighted avg      0.855     0.900     0.872      1000
 - `contract`: 0.045
 - `senior`: 0.027
 
-## Cost-based retention decision (turn the model into ROI)
+## Decisão de retenção baseada em custo (transformar o modelo em ROI)
 
-Assumptions: offer cost **R$ 25**/customer · retention success **30%** · value saved per retained customer **R$ 200**.
+Premissas: custo da oferta de R$ 25 por cliente, taxa de sucesso da retenção de 30% e valor salvo por cliente retido de R$ 200.
 
-- **Optimal policy: contact customers with churn prob ≥ 0.42** → **37 of 1000** test customers.
-- **Expected net value: R$ 256** vs R$ -19,716 from blasting everyone (**R$ 19,972 better**).
-- ROC-AUC says the model *ranks* well; this says **who to actually contact** to maximise return — the decision the business is paying for.
+- Política ótima: contatar clientes com probabilidade de churn maior ou igual a 0.42, o que dá 37 de 1000 clientes do conjunto de teste.
+- Valor líquido esperado: R$ 256, contra R$ -19.716 de disparar para todo mundo (R$ 19.972 melhor).
+- O ROC-AUC diz que o modelo ordena bem; este cálculo diz quem de fato contatar para maximizar o retorno, que é a decisão pela qual o negócio está pagando.
