@@ -1,8 +1,8 @@
-# Cohort Retention Analysis - Results
+# Cohort Retention Analysis, resultados
 
-5000 users across 12 monthly cohorts, 12-month horizon.
+Analisei 5000 usuários distribuídos em 12 cohorts mensais, acompanhando cada um por um horizonte de 12 meses. A ideia é ver quanta gente continua ativa conforme os meses passam, agrupando pelo mês de entrada.
 
-## Retention by cohort (% retained, month 0..N)
+## Retenção por cohort (% retida, do mês 0 ao N)
 
 ```
 month_since     0     1     2     3     4     5     6     7    8    9    10   11
@@ -21,8 +21,10 @@ cohort
 11           100.0   0.0   0.0   0.0   0.0   0.0   0.0   0.0  0.0  0.0  0.0  0.0
 ```
 
-## Average retention curve
+Os zeros à direita são apenas meses que ainda não aconteceram para os cohorts mais recentes, não quedas reais de retenção.
 
-- Month 1: **67.6%**  | Month 3: **30.8%**  | Month 6: **7.8%**
+## Curva média de retenção
 
-Later cohorts retain slightly better - the synthetic 'product' improves over time, and the analysis recovers that trend.
+- Mês 1: 67.6%  |  Mês 3: 30.8%  |  Mês 6: 7.8%
+
+Os cohorts mais novos retêm um pouco melhor. O "produto" sintético foi desenhado para melhorar com o tempo, e a análise consegue recuperar essa tendência.
