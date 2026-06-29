@@ -1,8 +1,8 @@
-# Market Basket Analysis - Results
+# Market Basket Analysis, resultados
 
-6,000 synthetic baskets over 15 products.
+Gerei 6.000 cestas sintéticas usando 15 produtos e rodei a análise de regras de associação para descobrir quais itens costumam aparecer juntos no mesmo carrinho.
 
-## Top association rules (by lift)
+## Principais regras de associação (ordenadas por lift)
 
 ```
   antecedent   consequent  support  confidence  lift
@@ -20,4 +20,4 @@ tomato_sauce        pasta    0.261       0.667  1.96
        chips         beer    0.292       0.745  1.62
 ```
 
-Lift > 1 means the two items are bought together more than chance would predict. The planted pairs (bread+butter, coffee+sugar, beer+chips, diapers+beer, pasta+tomato_sauce, wine+cheese) surface at the top.
+Lift maior que 1 quer dizer que os dois itens são comprados juntos com mais frequência do que o acaso preveria. Os pares plantados de propósito (bread+butter, coffee+sugar, beer+chips, diapers+beer, pasta+tomato_sauce, wine+cheese) aparecem todos no topo, que é exatamente o que a gente esperava ver.
