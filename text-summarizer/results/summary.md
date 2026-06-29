@@ -1,14 +1,18 @@
-# Text Summarizer — Output
+# Text Summarizer, resultado
 
-Source: **13 sentences / 239 words** → summary: **4 sentences / 99 words** (**41%** of the original).
+Peguei um texto de 13 frases e 239 palavras e reduzi para um resumo de 4 frases e 99 palavras, ou seja, 41% do original. A ideia e manter so o que carrega mais informacao e deixar o resto de fora.
 
-## Extractive summary (top-ranked sentences)
+## Resumo extrativo (as frases mais bem pontuadas)
+
 - This loop lets a system carry out multi-step campaigns with limited human supervision.
 - A typical marketing agent stack combines a large language model for reasoning, a retrieval layer for brand and product knowledge, and a set of tools such as analytics queries, content generators, and scheduling APIs.
 - The language model decides which tool to call next; the retrieval layer keeps answers grounded in the company's own data.
 - In practice, the value of an agent is measured the same way as any marketing tool: does it lower the time to produce a campaign, and does it move a business metric.
 
-## Sentence ranking (TextRank score)
+## Como cada frase ficou no ranking (score do TextRank)
+
+O TextRank trata as frases como nos de um grafo e da mais peso para as que estao mais conectadas ao resto do texto. Quanto maior o score, mais central a frase. A lista abaixo e o ranking completo das 13 frases:
+
 1. (0.1352) A typical marketing agent stack combines a large language model for reasoning, a...
 2. (0.1052) In practice, the value of an agent is measured the same way as any marketing too...
 3. (0.1047) This loop lets a system carry out multi-step campaigns with limited human superv...
@@ -22,3 +26,5 @@ Source: **13 sentences / 239 words** → summary: **4 sentences / 99 words** (**
 11. (0.0501) Dividing the work this way improves reliability and makes each step auditable....
 12. (0.0467) Instead of a single prompt-and-response interaction, an agent plans a goal, call...
 13. (0.0367) Orchestration frameworks like LangChain, AutoGen and CrewAi coordinate several a...
+
+As quatro primeiras do ranking sao exatamente as que entraram no resumo final.
